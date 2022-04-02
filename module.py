@@ -42,17 +42,51 @@ def two_dimensional_array_read_from(matrix, stream, size):
         matrix.data.append(list(map(lambda x: int(x), line.split())))
 
 
-def two_dimensional_array_write_to(matrix, stream):
-    for row in matrix.data:
-        stream.write(f'\t\t{row}\n')
+def two_dimensional_array_write_to(matrix, stream, size, out_type):
+    if out_type == 1:
+        stream.write('\t\t')
+        for i in range(size):
+            for j in range(size):
+                stream.write(f'{matrix.data[i][j]} ')
+            stream.write('\n\t\t')
+
+    elif out_type == 2:
+        stream.write('\t\t')
+        for i in range(size):
+            for j in range(size):
+                stream.write(f'{matrix.data[j][i]} ')
+            stream.write('\n\t\t')
+
+    elif out_type == 3:
+        stream.write('\t\t')
+        for i in range(size):
+            for j in range(size):
+                stream.write(f'{matrix.data[i][j]} ')
+        stream.write('\n\t\t')
+    else:
+        stream.write('\tError matrix output type\n')
 
 
 def diagonal_read_from(matrix, stream):
     matrix.data = list(map(lambda x: int(x), stream.readline().rstrip('\n').split()))
 
 
-def diagonal_write_to(matrix, stream):
-    stream.write(f'\t\t{matrix.data}\n')
+def diagonal_write_to(matrix, stream, size, out_type):
+    if out_type == 1 or out_type == 2:
+        stream.write('\t\t')
+        for i in range(size):
+            for j in range(size):
+                stream.write('{} '.format(matrix.data[i] if i == j else 0))
+            stream.write('\n\t\t')
+
+    elif out_type == 3:
+        stream.write('\t\t')
+        for i in range(size):
+            for j in range(size):
+                stream.write('{} '.format(matrix.data[i] if i == j else 0))
+        stream.write('\n\t\t')
+    else:
+        stream.write('\tError matrix output type\n')
 
 
 class MatrixType(Enum):
@@ -63,6 +97,7 @@ class MatrixType(Enum):
 class Matrix:
     def __init__(self):
         self.size = 0
+        self.out_type = 0
 
         self.key = None
         self.obj = None
@@ -73,6 +108,7 @@ def matrix_read_from(stream, line):
 
     matrix = Matrix()
     matrix.size = int(stream.readline().rstrip('\n'))
+    matrix.out_type = int(stream.readline().rstrip('\n'))
 
     if k == 1:
         matrix.key = MatrixType.two_dimensional_array
@@ -91,14 +127,15 @@ def matrix_read_from(stream, line):
 def matrix_write_to(matrix, stream):
     if matrix.key == MatrixType.two_dimensional_array:
         stream.write(f'\tThis is two-dimensional array\n')
-        two_dimensional_array_write_to(matrix.obj, stream)
+        two_dimensional_array_write_to(matrix.obj, stream, matrix.size, matrix.out_type)
     elif matrix.key == MatrixType.diagonal:
         stream.write(f'\tThis is diagonal matrix\n')
-        diagonal_write_to(matrix.obj, stream)
+        diagonal_write_to(matrix.obj, stream, matrix.size, matrix.out_type)
     else:
         stream.write('Error type\n')
 
-    stream.write(f'\tSize: {matrix.size}\n')
+    stream.write(f'Size: {matrix.size}\n')
+    stream.write(f'\t\tOutput type: {matrix.out_type}\n')
 
 
 class TwoDimArray:
