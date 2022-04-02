@@ -36,6 +36,13 @@ def container_write_to(container, stream):
             matrix_write_to(item, stream)
 
 
+def container_sort(container):
+    for i in range(container.size - 1):
+        for j in range(i + 1, container.size):
+            if compare(container.data[i].obj, container.data[j].obj):
+                container.data[i], container.data[j] = container.data[j], container.data[i]
+
+
 def two_dimensional_array_read_from(matrix, stream, size):
     for i in range(size):
         line = stream.readline().rstrip('\n')
@@ -163,6 +170,10 @@ def matrix_sum(matrix):
         else:
             s += sum(item)
     return s
+
+
+def compare(first, second):
+    return matrix_sum(first) < matrix_sum(second)
 
 
 class TwoDimArray:
