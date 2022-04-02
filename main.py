@@ -4,6 +4,7 @@ from module import (
     container_read_from,
     container_write_to,
     container_clear,
+    container_sort,
     Container
 )
 
@@ -23,6 +24,7 @@ def main():
 
     print('Filled container')
 
+    container_sort(container)
     output_file = open(sys.argv[2], "w")
     container_write_to(container, output_file)
 
