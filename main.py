@@ -4,6 +4,7 @@ from module import (
     container_read_from,
     container_write_to,
     container_clear,
+container_write_two_dimensional_array_to,
     Container
 )
 
@@ -24,7 +25,7 @@ def main():
     print('Filled container')
 
     output_file = open(sys.argv[2], "w")
-    container_write_to(container, output_file)
+    container_write_two_dimensional_array_to(container, output_file)
 
     container_clear(container)
 

@@ -36,6 +36,14 @@ def container_write_to(container, stream):
             matrix_write_to(item, stream)
 
 
+def container_write_two_dimensional_array_to(container, stream):
+    stream.write('Only two dimensional arrays\n')
+
+    for item in container.data:
+        if item.key == MatrixType.two_dimensional_array:
+            matrix_write_to(item, stream)
+
+
 def two_dimensional_array_read_from(matrix, stream, size):
     for i in range(size):
         line = stream.readline().rstrip('\n')
