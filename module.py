@@ -43,6 +43,14 @@ def container_sort(container):
                 container.data[i], container.data[j] = container.data[j], container.data[i]
 
 
+def container_write_two_dimensional_array_to(container, stream):
+    stream.write('Only two dimensional arrays\n')
+
+    for item in container.data:
+        if item.key == MatrixType.two_dimensional_array:
+            matrix_write_to(item, stream)
+
+
 def two_dimensional_array_read_from(matrix, stream, size):
     for i in range(size):
         line = stream.readline().rstrip('\n')
@@ -58,14 +66,12 @@ def two_dimensional_array_write_to(matrix, stream, size, out_type):
             stream.write('\n\t\t')
 
     elif out_type == 2:
-        stream.write('\t\t')
         for i in range(size):
             for j in range(size):
                 stream.write(f'{matrix.data[j][i]} ')
             stream.write('\n\t\t')
 
     elif out_type == 3:
-        stream.write('\t\t')
         for i in range(size):
             for j in range(size):
                 stream.write(f'{matrix.data[i][j]} ')
@@ -91,7 +97,6 @@ def diagonal_write_to(matrix, stream, size, out_type):
         for i in range(size):
             for j in range(size):
                 stream.write('{} '.format(matrix.data[i] if i == j else 0))
-        stream.write('\n\t\t')
     else:
         stream.write('\tError matrix output type\n')
 
@@ -100,8 +105,26 @@ def triangle_read_from(matrix, stream):
     matrix.data = list(map(lambda x: int(x), stream.readline().rstrip('\n').split()))
 
 
-def triangle_write_to(matrix, stream):
-    stream.write(f'\t\t{matrix.data}\n')
+def triangle_write_to(matrix, stream, size, out_type):
+    if out_type == 1 or out_type == 2:
+        stream.write('\t\t')
+        index = 0
+        for i in range(size):
+            for j in range(size):
+                if j >= i:
+                    stream.write(str(matrix.data[index]) + ' ')
+                    index += 1
+                else:
+                    stream.write('0 ')
+            stream.write('\n\t\t')
+
+    elif out_type == 3:
+        stream.write('\t\t')
+        for i in range(size):
+            for j in range(size):
+                stream.write('{} '.format(matrix.data[i] if i == j else 0))
+    else:
+        stream.write('\tError matrix output type\n')
 
 
 class MatrixType(Enum):
@@ -153,12 +176,12 @@ def matrix_write_to(matrix, stream):
         diagonal_write_to(matrix.obj, stream, matrix.size, matrix.out_type)
     elif matrix.key == MatrixType.triangle:
         stream.write('\tThis is triangle matrix\n')
-        triangle_write_to(matrix.obj, stream)
+        triangle_write_to(matrix.obj, stream, matrix.size, matrix.out_type)
     else:
         stream.write('Error type\n')
 
-    stream.write(f'\tSum: {matrix_sum(matrix.obj)}\n')
-    stream.write(f'\tSize: {matrix.size}\n')
+    stream.write(f'Sum: {matrix_sum(matrix.obj)}\n')
+    stream.write(f'\t\tSize: {matrix.size}\n')
     stream.write(f'\t\tOutput type: {matrix.out_type}\n')
 
 
