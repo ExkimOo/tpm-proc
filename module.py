@@ -18,8 +18,7 @@ def container_push_back(container, item):
 
 def container_clear(container):
     container.size = 0
-    container.data = None
-    container.capacity = None
+    container.data = []
 
 
 def container_read_from(container, stream):
