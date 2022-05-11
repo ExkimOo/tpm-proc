@@ -16,7 +16,11 @@ def main():
               "Waited: command in_file out_file")
         sys.exit(1)
 
-    input_file = open(sys.argv[1], "r")
+    try:
+        input_file = open(sys.argv[1], "r")
+    except OSError:
+        print('Opening file error')
+        sys.exit(1)
 
     print('Start')
 
@@ -25,8 +29,15 @@ def main():
 
     print('Filled container')
 
-    container_sort(container)
-    output_file = open(sys.argv[2], "w")
+    # container_sort(container)
+    try:
+        output_file = open(sys.argv[2], "w")
+    except OSError:
+        print('Opening file error')
+        sys.exit(1)
+    finally:
+        input_file.close()
+
     container_write_to(container, output_file)
     # container_write_two_dimensional_array_to(container, output_file)
 

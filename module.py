@@ -1,3 +1,4 @@
+import sys
 from enum import Enum
 
 
@@ -51,79 +52,109 @@ def container_write_two_dimensional_array_to(container, stream):
 
 
 def two_dimensional_array_read_from(matrix, stream, size):
-    for i in range(size):
-        line = stream.readline().rstrip('\n')
-        matrix.data.append(list(map(lambda x: int(x), line.split())))
+    try:
+        for i in range(size):
+            line = stream.readline().rstrip('\n')
+            matrix.data.append(list(map(lambda x: int(x), line.split())))
+    except:
+        print('Reading two-dimensional array from file error')
+        stream.close()
+        sys.exit(1)
 
 
 def two_dimensional_array_write_to(matrix, stream, size, out_type):
-    if out_type == 1:
-        stream.write('\t\t')
-        for i in range(size):
-            for j in range(size):
-                stream.write(f'{matrix.data[i][j]} ')
-            stream.write('\n\t\t')
+    try:
+        if out_type == 1:
+            stream.write('\t\t')
+            for i in range(size):
+                for j in range(size):
+                    stream.write(f'{matrix.data[i][j]} ')
+                stream.write('\n\t\t')
 
-    elif out_type == 2:
-        for i in range(size):
-            for j in range(size):
-                stream.write(f'{matrix.data[j][i]} ')
-            stream.write('\n\t\t')
+        elif out_type == 2:
+            for i in range(size):
+                for j in range(size):
+                    stream.write(f'{matrix.data[j][i]} ')
+                stream.write('\n\t\t')
 
-    elif out_type == 3:
-        for i in range(size):
-            for j in range(size):
-                stream.write(f'{matrix.data[i][j]} ')
-        stream.write('\n\t\t')
-    else:
-        stream.write('\tError matrix output type\n')
+        elif out_type == 3:
+            for i in range(size):
+                for j in range(size):
+                    stream.write(f'{matrix.data[i][j]} ')
+            stream.write('\n\t\t')
+        else:
+            stream.write('\tError matrix output type\n')
+    except:
+        print('Writing two-dimensional array to file error')
+        stream.close()
+        sys.exit(1)
 
 
 def diagonal_read_from(matrix, stream):
-    matrix.data = list(map(lambda x: int(x), stream.readline().rstrip('\n').split()))
+    try:
+        matrix.data = list(map(lambda x: int(x), stream.readline().rstrip('\n').split()))
+    except:
+        print('Reading diagonal matrix from file error')
+        stream.close()
+        sys.exit(1)
 
 
 def diagonal_write_to(matrix, stream, size, out_type):
-    if out_type == 1 or out_type == 2:
-        stream.write('\t\t')
-        for i in range(size):
-            for j in range(size):
-                stream.write('{} '.format(matrix.data[i] if i == j else 0))
-            stream.write('\n\t\t')
+    try:
+        if out_type == 1 or out_type == 2:
+            stream.write('\t\t')
+            for i in range(size):
+                for j in range(size):
+                    stream.write('{} '.format(matrix.data[i] if i == j else 0))
+                stream.write('\n\t\t')
 
-    elif out_type == 3:
-        stream.write('\t\t')
-        for i in range(size):
-            for j in range(size):
-                stream.write('{} '.format(matrix.data[i] if i == j else 0))
-    else:
-        stream.write('\tError matrix output type\n')
+        elif out_type == 3:
+            stream.write('\t\t')
+            for i in range(size):
+                for j in range(size):
+                    stream.write('{} '.format(matrix.data[i] if i == j else 0))
+        else:
+            stream.write('\tError matrix output type\n')
+    except:
+        print('Writing diagonal matrix to file error')
+        stream.close()
+        sys.exit(1)
 
 
 def triangle_read_from(matrix, stream):
-    matrix.data = list(map(lambda x: int(x), stream.readline().rstrip('\n').split()))
+    try:
+        matrix.data = list(map(lambda x: int(x), stream.readline().rstrip('\n').split()))
+    except:
+        print('Reading triangle matrix from file error')
+        stream.close()
+        sys.exit(1)
 
 
 def triangle_write_to(matrix, stream, size, out_type):
-    if out_type == 1 or out_type == 2:
-        stream.write('\t\t')
-        index = 0
-        for i in range(size):
-            for j in range(size):
-                if j >= i:
-                    stream.write(str(matrix.data[index]) + ' ')
-                    index += 1
-                else:
-                    stream.write('0 ')
-            stream.write('\n\t\t')
+    try:
+        if out_type == 1 or out_type == 2:
+            stream.write('\t\t')
+            index = 0
+            for i in range(size):
+                for j in range(size):
+                    if j >= i:
+                        stream.write(str(matrix.data[index]) + ' ')
+                        index += 1
+                    else:
+                        stream.write('0 ')
+                stream.write('\n\t\t')
 
-    elif out_type == 3:
-        stream.write('\t\t')
-        for i in range(size):
-            for j in range(size):
-                stream.write('{} '.format(matrix.data[i] if i == j else 0))
-    else:
-        stream.write('\tError matrix output type\n')
+        elif out_type == 3:
+            stream.write('\t\t')
+            for i in range(size):
+                for j in range(size):
+                    stream.write('{} '.format(matrix.data[i] if i == j else 0))
+        else:
+            stream.write('\tError matrix output type\n')
+    except:
+        print('Writing triangle matrix to file error')
+        stream.close()
+        sys.exit(1)
 
 
 class MatrixType(Enum):
@@ -142,11 +173,26 @@ class Matrix:
 
 
 def matrix_read_from(stream, line):
-    k = int(line)
+    try:
+        k = int(line)
+    except Exception:
+        print('Reading type of matrix error')
+        stream.close()
+        sys.exit(1)
 
     matrix = Matrix()
-    matrix.size = int(stream.readline().rstrip('\n'))
-    matrix.out_type = int(stream.readline().rstrip('\n'))
+    try:
+        matrix.size = int(stream.readline().rstrip('\n'))
+    except Exception:
+        print('Reading size error')
+        stream.close()
+        sys.exit(1)
+    try:
+        matrix.out_type = int(stream.readline().rstrip('\n'))
+    except Exception:
+        print('Reading out type error')
+        stream.close()
+        sys.exit(1)
 
     if k == 1:
         matrix.key = MatrixType.two_dimensional_array
@@ -167,31 +213,45 @@ def matrix_read_from(stream, line):
 
 
 def matrix_write_to(matrix, stream):
-    if matrix.key == MatrixType.two_dimensional_array:
-        stream.write(f'\tThis is two-dimensional array\n')
-        two_dimensional_array_write_to(matrix.obj, stream, matrix.size, matrix.out_type)
-    elif matrix.key == MatrixType.diagonal:
-        stream.write(f'\tThis is diagonal matrix\n')
-        diagonal_write_to(matrix.obj, stream, matrix.size, matrix.out_type)
-    elif matrix.key == MatrixType.triangle:
-        stream.write('\tThis is triangle matrix\n')
-        triangle_write_to(matrix.obj, stream, matrix.size, matrix.out_type)
-    else:
-        stream.write('Error type\n')
+    try:
+        if matrix.key == MatrixType.two_dimensional_array:
+            stream.write(f'\tThis is two-dimensional array\n')
+            two_dimensional_array_write_to(matrix.obj, stream, matrix.size, matrix.out_type)
+        elif matrix.key == MatrixType.diagonal:
+            stream.write(f'\tThis is diagonal matrix\n')
+            diagonal_write_to(matrix.obj, stream, matrix.size, matrix.out_type)
+        elif matrix.key == MatrixType.triangle:
+            stream.write('\tThis is triangle matrix\n')
+            triangle_write_to(matrix.obj, stream, matrix.size, matrix.out_type)
+        else:
+            stream.write('Error type\n')
+            sys.exit(1)
+    except Exception:
+        print('Writing matrix type to file error')
+        stream.close()
+        sys.exit(1)
 
-    stream.write(f'Sum: {matrix_sum(matrix.obj)}\n')
-    stream.write(f'\t\tSize: {matrix.size}\n')
-    stream.write(f'\t\tOutput type: {matrix.out_type}\n')
+    try:
+        stream.write(f'Sum: {matrix_sum(matrix.obj)}\n')
+        stream.write(f'\t\tSize: {matrix.size}\n')
+        stream.write(f'\t\tOutput type: {matrix.out_type}\n')
+    except Exception:
+        print('Writing matrix properties to file error')
+        stream.close()
+        sys.exit(1)
 
 
 def matrix_sum(matrix):
-    s = 0
-    for item in matrix.data:
-        if isinstance(item, int):
-            s += item
-        else:
-            s += sum(item)
-    return s
+    try:
+        s = 0
+        for item in matrix.data:
+            if isinstance(item, int):
+                s += item
+            else:
+                s += sum(item)
+        return s
+    except Exception:
+        print('Sum calculation error')
 
 
 def compare(first, second):
