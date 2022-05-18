@@ -6,6 +6,7 @@ from module import (
     container_clear,
     container_sort,
     container_write_two_dimensional_array_to,
+    container_check_matrices,
     Container
 )
 
@@ -40,6 +41,7 @@ def main():
 
     container_write_to(container, output_file)
     # container_write_two_dimensional_array_to(container, output_file)
+    container_check_matrices(container)
 
     container_clear(container)
 
